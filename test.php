@@ -44,12 +44,10 @@ body { margin: 1px; }
                 $p++;
                     
                     echo '<div class="row">';
-                    if(!empty($data[0])){
-                        echo '<div class="col-3"> <h6>Passport Size Photo</h6><img src='.$data[0].' width="150" height="150"></div>';//Passport-size photo
-                    }
-                    else{
-                        echo '<div class="col-3"> <h6>Passport Size Photo</h6><img src="noimage.jpg" width="150" height="150"></div>';
-                    }          
+          
+ 
+                    echo '<div class="col-3"> <h6>Passport Size Photo</h6><img src="noimage.jpg" width="150" height="150"></div>';//Passport Size Photo
+         
                     echo '<div class="col-6"><h2>Success Laventille Secondary School Eastern Main Road</h2><br><p>Official Student Record.</p></div>';
                     echo '<div class= "col-3"><img src="successlogo.png"  width="180" height="150"></div>';
                     echo '</div>';
