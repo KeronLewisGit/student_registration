@@ -23,7 +23,7 @@ body { margin: 1px; }
      * parse-csv.php
      */
 
-    $err_upTmpName = 'Success- Form 1A.csv';
+    $err_upTmpName = 'Test.csv';
     $t=0;
     $row = 0;
     $p= 0;
@@ -44,10 +44,12 @@ body { margin: 1px; }
                 $p++;
                     
                     echo '<div class="row">';
-          
- 
-                    echo '<div class="col-3"> <h6>Passport Size Photo</h6><img src="noimage.jpg" width="150" height="150"></div>';//Passport Size Photo
-         
+                    if(!empty($data[0])){
+                        echo '<div class="col-3"> <h6>Passport Size Photo</h6><img src='.$data[0].' width="150" height="150"></div>';//Passport-size photo
+                    }
+                    else{
+                        echo '<div class="col-3"> <h6>Passport Size Photo</h6><img src="noimage.jpg" width="150" height="150"></div>';
+                    }          
                     echo '<div class="col-6"><h2>Success Laventille Secondary School Eastern Main Road</h2><br><p>Official Student Record.</p></div>';
                     echo '<div class= "col-3"><img src="successlogo.png"  width="180" height="150"></div>';
                     echo '</div>';
@@ -83,16 +85,18 @@ body { margin: 1px; }
                         echo '<div class="col-4"> <h5 class="card-title">Immigation Status</h5> <p class="card-text"> N/A</p></div>';
                     }      
                     echo '</div>';    
+                    echo '<div class="row">';
                     if (!empty($data[15])){
-                        echo '<div> <h5 class="card-title">Student Permit Date of Issuance </h5> <p class="card-text">'.$data[15].'</p></div>';//Student Permit Date of Issuance 
+                        echo '<div class="col-6"> <h5 class="card-title">Student Permit Date of Issuance </h5> <p class="card-text">'.$data[15].'</p></div>';//Student Permit Date of Issuance 
                     }else{
-                        echo '<div> <h5 class="card-title">Student Permit Date of Issuance </h5> <p class="card-text"> N/A</p></div>';
-                    }
+                        echo '<div class="col-6"> <h5 class="card-title">Student Permit Date of Issuance </h5> <p class="card-text"> N/A</p></div>';
+                    }                    
                     if(!empty($data[16])){
-                        echo '<div> <h5 class="card-title">Student Permit Date of Expiration </h5> <p class="card-text">'.$data[16].'</p></div>';//Student Permit Date of Expiration
+                        echo '<div class="col-6"> <h5 class="card-title">Student Permit Date of Expiration </h5> <p class="card-text">'.$data[16].'</p></div>';//Student Permit Date of Expiration
                     }else{
-                        echo '<div> <h5 class="card-title">Student Permit Date of Expiration </h5> <p class="card-text"> N/A</p></div>';
+                        echo '<div class="col-6"> <h5 class="card-title">Student Permit Date of Expiration </h5> <p class="card-text"> N/A</p></div>';
                     }
+                    echo '</div>';
                     if(!empty($data[17])){
                         echo '<div> <h5 class="card-title">'.$title[17].'</h5> <p class="card-text">'.$data[17].'</p></div>';//Student Contact
                     }else{
@@ -114,24 +118,26 @@ body { margin: 1px; }
                     //echo '<p><b>'.$title[22].'</b> '.$data[22].'</p>';//Student S.E.A Slip
                     echo '<div class="col-6"> <h5 class="card-title">'.$title[23].'</h5> <p class="card-text">'.$data[23].'</p></div>';//Student S.E.A Number
                     echo '</div>';
+                    echo '<div class="row">';
                     if(!empty($data[24])){
-                        echo '<div> <h5 class="card-title">'.$title[24].'</h5> <p class="card-text">'.$data[24].'</p></div>';//Are you a Transfer Student
+                        echo '<div class="col-6"> <h5 class="card-title">'.$title[24].'</h5> <p class="card-text">'.$data[24].'</p></div>';//Are you a Transfer Student
                     }
                     else{
-                        echo '<div> <h5 class="card-title">'.$title[24].'</h5> <p class="card-text"></b> N/A</p></div>';
+                        echo '<div class="col-6"> <h5 class="card-title">'.$title[24].'</h5> <p class="card-text"> N/A</p></div>';
                     }
                     if(!empty($data[25])){
-                        echo '<p><b>'.$title[25].'</b> '.$data[25].'</p>';//Transfer Slip
+                        echo '<div class="col-6"> <h5 class="card-title">'.$title[25].'</h5> <p class="card-text">'.$data[25].'</p></div>';//Transfer Slip
                     }
                     if($data[24]!='No'){
-                        echo '<p><b>'.$title[26].'</b> '.$data[26].'</p>';
+                        echo '<div class="col-6"> <h5 class="card-title">Transfer Year</h5> <p class="card-text">'.$data[26].'</p></div>';//Transfer Year
                     }
+                    echo '</div>';
                     if($data[24]!='No'){
-                        echo '<p><b>'.$title[27].'</b> '.$data[27].'</p>';//Previous School Name
+                        echo '<div class="col-6"><h5 class="card-title">Previous Secondary School</h5> <p class="card-text"> '.$data[27].'</p></div>';//Previous School Name
                     }
-                    if($data[24]!='No'){
+                    /*if($data[24]!='No'){
                         echo '<p><b>'.$title[28].'</b> '.$data[28].'</p>';//Previous School Location
-                    }
+                    }*/
                     echo'</div></div>';
                     echo '<div class="card end">';
                     echo '<div class="card-header">Medical Information </div>';
