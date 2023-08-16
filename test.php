@@ -13,6 +13,7 @@ error_reporting(E_ALL);
 div{
     padding-top:10px;
     padding-bottom:10px;
+    
 }
 
 *{
@@ -46,8 +47,14 @@ body { margin: 1px;}
     z-index:-1;
 }
 @media print {
-  footer {page-break-after: always;}
-  .end {page-break-after: always;}
+  .end {
+    display:block;
+    page-break-after: always; 
+    page-break-inside: avoid !important;
+    }
+    html, body {
+        height: 99%;    
+    }
   .filterHeader, .filterHeader *{
     display:none !important;
   }
@@ -59,6 +66,8 @@ body { margin: 1px;}
     min-height:1056px; 
     padding:0 0 30px; 
     box-sizing: border-box;
+    display:none;
+   
 }
 
 </style>
@@ -69,6 +78,7 @@ body { margin: 1px;}
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="icon" type="image/x-icon" href="successlogo.png">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <title>Success Student Management System</title>
 
     </head>
@@ -81,19 +91,19 @@ body { margin: 1px;}
             return (bool) filter_var($record["Form 1 Class"] == "1A");
         }
 
-        function sortByStudentClass(array $recordA, array $recordB): int
+        function sortByStudentName(array $recordA, array $recordB): int
         {
-            return strcmp($recordB["Form 1 Class"], $recordA["Form 1 Class"]);
+            return strcmp($recordB["Student Name"], $recordA["Student Name"]);
         }
 
         //load the CSV document from a file path
         $reader = Reader::createFromPath('2023/Form1-Registration-Data-Updated.csv', 'r');
         $reader->setHeaderOffset(0);
         $records = Statement::create()
-        ->where('filterByStudentClass')
-        ->orderBy('sortByStudentClass')
+        ->orderBy('sortByStudentName')
         ->process($reader);
         $title = $records->getHeader(); 
+
         
         ?>
         <div class="filterHeader ">
@@ -102,14 +112,22 @@ body { margin: 1px;}
                         <label class="visually-hidden" for="student_class">Select Student Class:</label>
                         <select id="student_class" class="form-select">
                             <option selected>Student Class</option>
-                            <option>...</option>
+                            <option value="1A">Form 1A</option>
+                            <option value="1B">Form 1B</option>
+                            <option value="1C">Form 1C</option>
+                            <option value="1D">Form 1D</option>
+                            <option value="1E">Form 1E</option>
                         </select>
                     </div>
                     <div class=" col-md-6">
                         <label class="visually-hidden" for="student_name">Select Student Name:</label>
                         <select id="student_name" class="form-select">
                             <option selected>Student Name</option>
-                            <option value="1">.</option>
+                            <?php
+                                foreach ($records as $record){
+                                    echo "<option>".$record["Student Name"]."</option>";
+                                } 
+                            ?>
                         </select>
                     </div>
             </form>
@@ -128,7 +146,7 @@ body { margin: 1px;}
                 $headerimg = $info['extension'];
             }
             
-            echo '<div class="pagestyle">';
+            echo '<div id="'.$record['Student Name'].'" class="'.$record['Form 1 Class'].' pagestyle">';
             echo '<div class="container end">';
                 echo '<div style="padding-top:50px" class="row">';
                 if(!empty($record['Student Photo(Passport Size)']) && $headerimg!='pdf'){
@@ -311,7 +329,7 @@ body { margin: 1px;}
                 if(!empty($record["Is Father Deceased?"]) && $record["Is Father Deceased?"]=="No" ){
                     echo '<div class="col-4"> <h5 class="card-title">Status</h5> <p class="card-text font-italic"> Alive </p></div>';//Father's Status     
                 }
-                else if (!empty($record["Is Father Deceased?"]) && $record[57]=="Yes" ){
+                else if (!empty($record["Is Father Deceased?"]) && $record["Is Father Deceased?"]=="Yes" ){
                     echo '<div class="col-4"> <h5 class="card-title">Status</h5> <p class="card-text font-italic"> Deceased </p></div>';
                 }
                 else{
@@ -483,7 +501,21 @@ body { margin: 1px;}
         }
         
     ?>
-
+    <script>
+        $(document).ready(function(){
+            $("#student_class").change(function(){
+                $(this).find("option:selected").each(function(){
+                    var optionValue = $(this).attr("value");
+                    if(optionValue){
+                        $(".pagestyle").not("." + optionValue).hide();
+                        $("." + optionValue).show();
+                    } else{
+                        $(".pagestyle").hide();
+                    }
+                });
+            }).change();
+        });
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
     </body>
 </html>
