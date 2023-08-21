@@ -111,7 +111,11 @@ body { margin: 1px;}
         ->process($reader);
         $title = $records->getHeader(); 
 
-     
+        $form1A['Name']="'Student Name'";
+        $form1B['Name']="'Student Name'";
+        $form1C['Name']="'Student Name'";
+        $form1D['Name']="'Student Name'";
+        $form1E['Name']="'Student Name'";
         foreach ($records as $record){
             if ($record['Form 1 Class'] == '1A'){
                 $form1A[]= "'".$record["Student Name"]."'";
@@ -176,7 +180,7 @@ body { margin: 1px;}
                     <div class=" col-md-6">
                         <label class="visually-hidden" for="student_name">Select Student Name:</label>
                         <select id="student_name" class="form-select">
-                            
+                        <option value= "0" selected>Student Name</option>
                         </select>
                     </div>
             </form>
@@ -572,8 +576,11 @@ body { margin: 1px;}
         }
 
         var $students = $('#student_name');
-  
-        $('#student_class').change(function() {
+        var $student_classes =$('#student_class');
+
+    
+            $('#student_class').change(function() {
+            if ($student_classes.val() != 0){
             
             //filters student select based on class selected.
             var studentclass = $(this).val(), lens = students[studentclass] || [];
@@ -582,6 +589,7 @@ body { margin: 1px;}
             }).join('');
             $students.html(html);
 
+            }
             //filters page based on option selected.
             $(this).find("option:selected").each(function(){
             var optionValue = $(this).val();   
@@ -593,19 +601,25 @@ body { margin: 1px;}
                 $(".pagestyle").hide();
             }    
             });
+            console.log($student_classes.val())
         }).change();
-
+       
+      
         //filters student page based on student option selected.
-        $("#student_name").change(function(){
-        $(this).find("option:selected").each(function(){
-            var studentValue = $(this).attr("value");  
-            if(studentValue){
-                $(".pagestyle").not("." + studentValue).hide();
-                $("." + studentValue).show();
-            } else{
-                $(".pagestyle").hide();
-            }
-        });
+        $('#student_name').change(function() {
+            if ($("#student_name").val()!="StudentName"){
+                $(this).find("option:selected").each(function(){
+                var studentValue = $(this).attr("value");  
+                if(studentValue){
+                    $(".pagestyle").not("." + studentValue).hide();
+                    $("." + studentValue).show();
+                } else{
+                    $(".pagestyle").hide();
+                }
+            });
+        }else{
+            $("." + $('#student_class').val()).show(); 
+        }
         }).change();  
   
 
